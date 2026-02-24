@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createSession, getSession } from "./session";
+import { createSession, getSession, recordAttempt } from "./session";
 
 describe("createSession", () => {
 	it("returns a session with all 4 riddle IDs and empty progress", () => {
@@ -31,5 +31,18 @@ describe("getSession", () => {
 
 	it("returns undefined for unknown ID", () => {
 		expect(getSession("nonexistent")).toBeUndefined();
+	});
+});
+
+describe("recordAttempt", () => {
+	it("increments attempt counter for a riddle", () => {
+		const session = createSession();
+		const riddleId = session.currentRiddleId!;
+
+		recordAttempt(session.id, riddleId);
+		expect(getSession(session.id)!.attempts[riddleId]).toBe(1);
+
+		recordAttempt(session.id, riddleId);
+		expect(getSession(session.id)!.attempts[riddleId]).toBe(2);
 	});
 });

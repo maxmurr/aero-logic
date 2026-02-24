@@ -12,13 +12,14 @@ export const RiddleController = ({
 	sessionId: string;
 }) => {
 	const handleCheckAnswer = async (riddleId: string, answerId: string) => {
-		return checkAnswer(riddleId, answerId);
+		return checkAnswer(riddleId, answerId, sessionId);
 	};
 
 	return (
 		<RiddleView
 			riddle={riddle}
 			checkAnswer={handleCheckAnswer}
+			onRetry={() => {}}
 		/>
 	);
 };

@@ -11,9 +11,11 @@ type CheckAnswerFn = (
 export const RiddleView = ({
 	riddle,
 	checkAnswer,
+	onRetry,
 }: {
 	riddle: Riddle;
 	checkAnswer?: CheckAnswerFn;
+	onRetry?: () => void;
 }) => {
 	const designator = `RDL-${riddle.id.padStart(3, "0")}`;
 	const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>(null);
@@ -24,6 +26,12 @@ export const RiddleView = ({
 		setSelectedAnswerId(answerId);
 		const response = await checkAnswer(riddle.id, answerId);
 		setResult(response);
+	};
+
+	const handleTryAgain = () => {
+		setSelectedAnswerId(null);
+		setResult(null);
+		onRetry?.();
 	};
 
 	const getStatus = (answerId: string): string | undefined => {
@@ -103,16 +111,29 @@ export const RiddleView = ({
 					</ul>
 
 					{result && (
-						<p
-							data-test="result-message"
-							className={`mt-6 font-mono text-sm tracking-wide ${
-								result.correct ? "text-correct" : "text-wrong"
-							}`}
-						>
-							{result.correct
-								? "Great job! Your answer is correct"
-								: "Your answer is wrong"}
-						</p>
+						<div className="mt-6 flex items-center justify-between">
+							<p
+								data-test="result-message"
+								className={`font-mono text-sm tracking-wide ${
+									result.correct ? "text-correct" : "text-wrong"
+								}`}
+							>
+								{result.correct
+									? "Great job! Your answer is correct"
+									: "Your answer is wrong"}
+							</p>
+
+							{!result.correct && (
+								<button
+									type="button"
+									data-test="try-again-button"
+									onClick={handleTryAgain}
+									className="inline-flex items-center gap-2 rounded-sm border border-amber bg-panel px-5 py-2.5 font-mono text-xs tracking-[0.15em] uppercase text-amber transition-colors hover:bg-amber-glow"
+								>
+									Try Again
+								</button>
+							)}
+						</div>
 					)}
 				</div>
 

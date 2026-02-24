@@ -80,4 +80,59 @@ describe("Riddle Page", () => {
 			cy.get('[data-test="answer-4"]').should("be.disabled");
 		});
 	});
+
+	describe("try again flow", () => {
+		it("shows Try Again button after wrong answer", () => {
+			const riddle = getRiddleById("1")!;
+			const mockCheckAnswer = cy.stub().resolves({ correct: false });
+
+			cy.mount(
+				<RiddleView riddle={riddle} checkAnswer={mockCheckAnswer} />,
+			);
+
+			cy.get('[data-test="answer-1"]').click();
+			cy.get('[data-test="try-again-button"]').should("be.visible");
+		});
+
+		it("resets answer selection when Try Again is clicked", () => {
+			const riddle = getRiddleById("1")!;
+			const mockCheckAnswer = cy.stub().resolves({ correct: false });
+
+			cy.mount(
+				<RiddleView riddle={riddle} checkAnswer={mockCheckAnswer} />,
+			);
+
+			cy.get('[data-test="answer-1"]').click();
+			cy.get('[data-test="try-again-button"]').click();
+
+			cy.get('[data-test="answer-1"]').should("not.be.disabled");
+			cy.get('[data-test="answer-2"]').should("not.be.disabled");
+			cy.get('[data-test="answer-3"]').should("not.be.disabled");
+			cy.get('[data-test="answer-4"]').should("not.be.disabled");
+
+			cy.get('[data-test="answer-1"]').should("not.have.attr", "data-status");
+			cy.get('[data-test="result-message"]').should("not.exist");
+		});
+
+		it("calls onRetry callback when Try Again is clicked", () => {
+			const riddle = getRiddleById("1")!;
+			const mockCheckAnswer = cy.stub().resolves({ correct: false });
+			const onRetry = cy.stub();
+
+			cy.mount(
+				<RiddleView
+					riddle={riddle}
+					checkAnswer={mockCheckAnswer}
+					onRetry={onRetry}
+				/>,
+			);
+
+			cy.get('[data-test="answer-1"]').click();
+			cy.get('[data-test="try-again-button"]')
+				.click()
+				.then(() => {
+					expect(onRetry).to.have.been.calledOnce;
+				});
+		});
+	});
 });

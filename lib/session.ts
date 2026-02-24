@@ -38,3 +38,9 @@ export const createSession = (): Session => {
 export const getSession = (id: string): Session | undefined => {
 	return sessions.get(id);
 };
+
+export const recordAttempt = (sessionId: string, riddleId: string): void => {
+	const session = sessions.get(sessionId);
+	if (!session) return;
+	session.attempts[riddleId] = (session.attempts[riddleId] ?? 0) + 1;
+};
