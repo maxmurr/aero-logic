@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:unit": "vitest"
+    "test:unit": "vitest",
+    "test:integration": "cypress open --component --browser electron"
   },
   "dependencies": {
     "next": "16.2.0-canary.59",
@@ -20,6 +21,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^5.1.4",
+    "cypress": "^15.10.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.0-canary.59",
     "jsdom": "^28.1.0",
