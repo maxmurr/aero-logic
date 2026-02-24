@@ -1,5 +1,6 @@
 import { getRiddleById } from "@/lib/riddles";
 import { notFound } from "next/navigation";
+import { checkAnswer } from "./actions";
 import { RiddleView } from "./riddle-view";
 
 const RiddlePage = async ({
@@ -14,7 +15,7 @@ const RiddlePage = async ({
 		notFound();
 	}
 
-	return <RiddleView riddle={riddle} />;
+	return <RiddleView riddle={riddle} checkAnswer={checkAnswer} />;
 };
 
 export default RiddlePage;

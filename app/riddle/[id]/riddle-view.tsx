@@ -1,7 +1,37 @@
+"use client";
+
+import { useState } from "react";
 import type { Riddle } from "@/lib/riddles";
 
-export const RiddleView = ({ riddle }: { riddle: Riddle }) => {
+type CheckAnswerFn = (
+	riddleId: string,
+	answerId: string,
+) => Promise<{ correct: boolean }>;
+
+export const RiddleView = ({
+	riddle,
+	checkAnswer,
+}: {
+	riddle: Riddle;
+	checkAnswer?: CheckAnswerFn;
+}) => {
 	const designator = `RDL-${riddle.id.padStart(3, "0")}`;
+	const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>(null);
+	const [result, setResult] = useState<{ correct: boolean } | null>(null);
+
+	const handleAnswerClick = async (answerId: string) => {
+		if (selectedAnswerId || !checkAnswer) return;
+		setSelectedAnswerId(answerId);
+		const response = await checkAnswer(riddle.id, answerId);
+		setResult(response);
+	};
+
+	const getStatus = (answerId: string): string | undefined => {
+		if (!result || selectedAnswerId !== answerId) return undefined;
+		return result.correct ? "correct" : "wrong";
+	};
+
+	const isDisabled = selectedAnswerId !== null;
 
 	return (
 		<main className="flex flex-1 flex-col items-center justify-center px-4 py-16 aviation-grid">
@@ -34,20 +64,56 @@ export const RiddleView = ({ riddle }: { riddle: Riddle }) => {
 					</div>
 
 					<ul className="space-y-2">
-						{riddle.answers.map((answer, index) => (
-							<li
-								key={answer.id}
-								className="group flex items-center gap-4 rounded-sm border border-answer-border bg-answer-bg px-5 py-4 transition-colors hover:bg-answer-hover hover:border-amber-dim"
-							>
-								<span className="font-mono text-xs text-amber tabular-nums w-5 shrink-0">
-									{String.fromCharCode(65 + index)}
-								</span>
-								<span className="text-sm tracking-wide">
-									{answer.text}
-								</span>
-							</li>
-						))}
+						{riddle.answers.map((answer, index) => {
+							const status = getStatus(answer.id);
+							return (
+								<li key={answer.id}>
+									<button
+										type="button"
+										data-test={`answer-${answer.id}`}
+										data-status={status}
+										disabled={isDisabled}
+										onClick={() => handleAnswerClick(answer.id)}
+										className={`group flex w-full items-center gap-4 rounded-sm border px-5 py-4 text-left transition-colors ${
+											status === "correct"
+												? "border-correct bg-correct-bg"
+												: status === "wrong"
+													? "border-wrong bg-wrong-bg"
+													: "border-answer-border bg-answer-bg hover:bg-answer-hover hover:border-amber-dim"
+										} ${isDisabled && !status ? "opacity-50 cursor-not-allowed" : ""} ${!isDisabled ? "cursor-pointer" : ""}`}
+									>
+										<span
+											className={`font-mono text-xs tabular-nums w-5 shrink-0 ${
+												status === "correct"
+													? "text-correct"
+													: status === "wrong"
+														? "text-wrong"
+														: "text-amber"
+											}`}
+										>
+											{String.fromCharCode(65 + index)}
+										</span>
+										<span className="text-sm tracking-wide">
+											{answer.text}
+										</span>
+									</button>
+								</li>
+							);
+						})}
 					</ul>
+
+					{result && (
+						<p
+							data-test="result-message"
+							className={`mt-6 font-mono text-sm tracking-wide ${
+								result.correct ? "text-correct" : "text-wrong"
+							}`}
+						>
+							{result.correct
+								? "Great job! Your answer is correct"
+								: "Your answer is wrong"}
+						</p>
+					)}
 				</div>
 
 				{/* Bottom rule */}

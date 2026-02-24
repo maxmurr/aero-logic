@@ -12,6 +12,10 @@
   --answer-bg: #fafaf8;
   --answer-border: #e8e6e1;
   --answer-hover: #f0eee9;
+  --correct: #16a34a;
+  --correct-bg: #16a34a1a;
+  --wrong: #dc2626;
+  --wrong-bg: #dc26261a;
 }
 
 @theme inline {
@@ -26,6 +30,10 @@
   --color-answer-bg: var(--answer-bg);
   --color-answer-border: var(--answer-border);
   --color-answer-hover: var(--answer-hover);
+  --color-correct: var(--correct);
+  --color-correct-bg: var(--correct-bg);
+  --color-wrong: var(--wrong);
+  --color-wrong-bg: var(--wrong-bg);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -43,6 +51,10 @@
     --answer-bg: #16161f;
     --answer-border: #2a2a36;
     --answer-hover: #1e1e28;
+    --correct: #22c55e;
+    --correct-bg: #22c55e1a;
+    --wrong: #ef4444;
+    --wrong-bg: #ef44441a;
   }
 }
 
