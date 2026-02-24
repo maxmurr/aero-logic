@@ -39,3 +39,16 @@ export const getNextRiddle = async (
 		isComplete: isSessionComplete(sessionId),
 	};
 };
+
+export const getSessionProgress = async (
+	sessionId: string,
+): Promise<{ current: number; total: number }> => {
+	const session = getSession(sessionId);
+	if (!session) {
+		return { current: 1, total: 4 };
+	}
+	return {
+		current: session.completedRiddleIds.length + 1,
+		total: 4,
+	};
+};

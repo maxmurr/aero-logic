@@ -1,6 +1,6 @@
 import { getRiddleById } from "@/lib/riddles";
 import { notFound } from "next/navigation";
-import { checkAnswer } from "./actions";
+import { checkAnswer, getSessionProgress } from "./actions";
 import { RiddleController } from "./riddle-controller";
 import { RiddleView } from "./riddle-view";
 
@@ -20,7 +20,14 @@ const RiddlePage = async ({
 	}
 
 	if (sessionId) {
-		return <RiddleController riddle={riddle} sessionId={sessionId} />;
+		const progress = await getSessionProgress(sessionId);
+		return (
+			<RiddleController
+				riddle={riddle}
+				sessionId={sessionId}
+				initialProgress={progress}
+			/>
+		);
 	}
 
 	return <RiddleView riddle={riddle} checkAnswer={checkAnswer} />;

@@ -8,16 +8,23 @@ type CheckAnswerFn = (
 	answerId: string,
 ) => Promise<{ correct: boolean }>;
 
+type Progress = {
+	current: number;
+	total: number;
+};
+
 export const RiddleView = ({
 	riddle,
 	checkAnswer,
 	onRetry,
 	onNextQuestion,
+	progress,
 }: {
 	riddle: Riddle;
 	checkAnswer?: CheckAnswerFn;
 	onRetry?: () => void;
 	onNextQuestion?: () => void;
+	progress?: Progress;
 }) => {
 	const designator = `RDL-${riddle.id.padStart(3, "0")}`;
 	const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>(null);
@@ -56,6 +63,15 @@ export const RiddleView = ({
 						{designator}
 					</span>
 					<span className="flex-1 h-px bg-panel-border" />
+					{progress && (
+						<span
+							data-test="progress-indicator"
+							className="font-mono text-xs tracking-wider text-muted"
+						>
+							Question {progress.current} of {progress.total}
+						</span>
+					)}
+					{progress && <span className="flex-1 h-px bg-panel-border" />}
 					<span className="font-mono text-xs tracking-wider text-muted">
 						RIDDLE
 					</span>

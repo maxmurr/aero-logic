@@ -5,7 +5,7 @@ vi.mock("@/packages/riddle-exam", () => ({
 	getAnswerFor: vi.fn().mockResolvedValue("2"),
 }));
 
-import { checkAnswer, getNextRiddle } from "./actions";
+import { checkAnswer, getNextRiddle, getSessionProgress } from "./actions";
 
 describe("checkAnswer", () => {
 	it("returns correct when answer matches", async () => {
@@ -63,5 +63,24 @@ describe("getNextRiddle", () => {
 		const result = await getNextRiddle(session.id);
 		expect(result.nextRiddleId).toBeNull();
 		expect(result.isComplete).toBe(true);
+	});
+});
+
+describe("getSessionProgress", () => {
+	it("returns current 1, total 4 for a new session", async () => {
+		const session = createSession();
+		const progress = await getSessionProgress(session.id);
+
+		expect(progress).toEqual({ current: 1, total: 4 });
+	});
+
+	it("returns current 2 after one riddle completed", async () => {
+		const session = createSession();
+		const firstRiddle = session.currentRiddleId!;
+		await checkAnswer(firstRiddle, "2", session.id);
+
+		const progress = await getSessionProgress(session.id);
+		expect(progress.current).toBe(2);
+		expect(progress.total).toBe(4);
 	});
 });

@@ -182,4 +182,29 @@ describe("Riddle Page", () => {
 			cy.get('[data-test="try-again-button"]').should("not.exist");
 		});
 	});
+
+	describe("progress indicator", () => {
+		it("shows 'Question X of Y' when progress prop is provided", () => {
+			const riddle = getRiddleById("1")!;
+
+			cy.mount(
+				<RiddleView
+					riddle={riddle}
+					progress={{ current: 2, total: 4 }}
+				/>,
+			);
+
+			cy.get('[data-test="progress-indicator"]')
+				.should("be.visible")
+				.and("contain", "Question 2 of 4");
+		});
+
+		it("does not show progress indicator when prop is absent", () => {
+			const riddle = getRiddleById("1")!;
+
+			cy.mount(<RiddleView riddle={riddle} />);
+
+			cy.get('[data-test="progress-indicator"]').should("not.exist");
+		});
+	});
 });

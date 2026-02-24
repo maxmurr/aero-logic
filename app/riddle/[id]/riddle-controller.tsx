@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import type { Riddle } from "@/lib/riddles";
 import { checkAnswer, getNextRiddle } from "./actions";
 import { RiddleView } from "./riddle-view";
@@ -8,11 +9,14 @@ import { RiddleView } from "./riddle-view";
 export const RiddleController = ({
 	riddle,
 	sessionId,
+	initialProgress,
 }: {
 	riddle: Riddle;
 	sessionId: string;
+	initialProgress: { current: number; total: number };
 }) => {
 	const router = useRouter();
+	const [progress,] = useState(initialProgress);
 
 	const handleCheckAnswer = async (riddleId: string, answerId: string) => {
 		return checkAnswer(riddleId, answerId, sessionId);
@@ -34,6 +38,7 @@ export const RiddleController = ({
 			checkAnswer={handleCheckAnswer}
 			onRetry={() => {}}
 			onNextQuestion={handleNextQuestion}
+			progress={progress}
 		/>
 	);
 };
