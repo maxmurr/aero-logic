@@ -1,8 +1,10 @@
-import RiddlePage from "../../app/riddle/[id]/page";
+import { RiddleView } from "../../app/riddle/[id]/riddle-view";
+import { getRiddleById } from "../../lib/riddles";
 
 describe("Riddle Page", () => {
 	it("renders riddle contents and all answer options", () => {
-		cy.mount(<RiddlePage params={Promise.resolve({ id: "1" })} />);
+		const riddle = getRiddleById("1")!;
+		cy.mount(<RiddleView riddle={riddle} />);
 
 		cy.contains(
 			"I have wings but carry no feathers",
@@ -15,7 +17,8 @@ describe("Riddle Page", () => {
 	});
 
 	it("renders a different riddle for ID 2", () => {
-		cy.mount(<RiddlePage params={Promise.resolve({ id: "2" })} />);
+		const riddle = getRiddleById("2")!;
+		cy.mount(<RiddleView riddle={riddle} />);
 
 		cy.contains(
 			"Pilots check me before every flight",
