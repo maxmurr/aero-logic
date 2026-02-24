@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { startSession } from "./landing-actions";
 
 export const LandingStart = () => {
 	const router = useRouter();
@@ -9,10 +10,8 @@ export const LandingStart = () => {
 
 	const handleStart = async () => {
 		setLoading(true);
-		const response = await fetch("/api/riddles");
-		const { riddles } = await response.json();
-		const randomRiddle = riddles[Math.floor(Math.random() * riddles.length)];
-		router.push(`/riddle/${randomRiddle.id}`);
+		const { sessionId, firstRiddleId } = await startSession();
+		router.push(`/riddle/${firstRiddleId}?session=${sessionId}`);
 	};
 
 	return (

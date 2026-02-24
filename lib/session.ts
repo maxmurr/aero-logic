@@ -1,0 +1,40 @@
+import { getAllRiddles } from "./riddles";
+
+export type Session = {
+	id: string;
+	remainingRiddleIds: string[];
+	completedRiddleIds: string[];
+	attempts: Record<string, number>;
+	currentRiddleId: string | null;
+};
+
+const sessions = new Map<string, Session>();
+
+const shuffle = <T>(array: T[]): T[] => {
+	const shuffled = [...array];
+	for (let i = shuffled.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+	}
+	return shuffled;
+};
+
+export const createSession = (): Session => {
+	const id = crypto.randomUUID();
+	const riddleIds = shuffle(getAllRiddles().map((r) => r.id));
+
+	const session: Session = {
+		id,
+		remainingRiddleIds: riddleIds,
+		completedRiddleIds: [],
+		attempts: {},
+		currentRiddleId: riddleIds[0],
+	};
+
+	sessions.set(id, session);
+	return session;
+};
+
+export const getSession = (id: string): Session | undefined => {
+	return sessions.get(id);
+};
