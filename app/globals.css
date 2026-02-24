@@ -1,26 +1,117 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8f7f4;
+  --foreground: #1a1a2e;
+  --amber: #d4920b;
+  --amber-dim: #b8830f;
+  --amber-glow: #e8a02733;
+  --panel: #ffffff;
+  --panel-border: #e2e0db;
+  --muted: #8a8780;
+  --answer-bg: #fafaf8;
+  --answer-border: #e8e6e1;
+  --answer-hover: #f0eee9;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-amber: var(--amber);
+  --color-amber-dim: var(--amber-dim);
+  --color-amber-glow: var(--amber-glow);
+  --color-panel: var(--panel);
+  --color-panel-border: var(--panel-border);
+  --color-muted: var(--muted);
+  --color-answer-bg: var(--answer-bg);
+  --color-answer-border: var(--answer-border);
+  --color-answer-hover: var(--answer-hover);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0b0b11;
+    --foreground: #d4d2cc;
+    --amber: #e8a027;
+    --amber-dim: #c4891f;
+    --amber-glow: #e8a02722;
+    --panel: #12121a;
+    --panel-border: #2a2a36;
+    --muted: #6b6a65;
+    --answer-bg: #16161f;
+    --answer-border: #2a2a36;
+    --answer-hover: #1e1e28;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Subtle grid pattern for aviation feel */
+.aviation-grid {
+  background-image:
+    linear-gradient(var(--panel-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--panel-border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+}
+
+/* Corner registration marks — HUD frame aesthetic */
+.hud-frame {
+  position: relative;
+}
+
+.hud-frame::before,
+.hud-frame::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.hud-frame::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--amber);
+  border-left: 2px solid var(--amber);
+}
+
+.hud-frame::after {
+  top: -1px;
+  right: -1px;
+  border-top: 2px solid var(--amber);
+  border-right: 2px solid var(--amber);
+}
+
+.hud-frame-bottom {
+  position: relative;
+}
+
+.hud-frame-bottom::before,
+.hud-frame-bottom::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.hud-frame-bottom::before {
+  bottom: -1px;
+  left: -1px;
+  border-bottom: 2px solid var(--amber);
+  border-left: 2px solid var(--amber);
+}
+
+.hud-frame-bottom::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid var(--amber);
+  border-right: 2px solid var(--amber);
 }
