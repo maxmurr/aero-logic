@@ -135,4 +135,51 @@ describe("Riddle Page", () => {
 				});
 		});
 	});
+
+	describe("next question flow", () => {
+		it("shows Next Question button after correct answer", () => {
+			const riddle = getRiddleById("1")!;
+			const mockCheckAnswer = cy.stub().resolves({ correct: true });
+
+			cy.mount(
+				<RiddleView riddle={riddle} checkAnswer={mockCheckAnswer} />,
+			);
+
+			cy.get('[data-test="answer-2"]').click();
+			cy.get('[data-test="next-question-button"]').should("be.visible");
+		});
+
+		it("calls onNextQuestion callback when Next Question is clicked", () => {
+			const riddle = getRiddleById("1")!;
+			const mockCheckAnswer = cy.stub().resolves({ correct: true });
+			const onNextQuestion = cy.stub();
+
+			cy.mount(
+				<RiddleView
+					riddle={riddle}
+					checkAnswer={mockCheckAnswer}
+					onNextQuestion={onNextQuestion}
+				/>,
+			);
+
+			cy.get('[data-test="answer-2"]').click();
+			cy.get('[data-test="next-question-button"]')
+				.click()
+				.then(() => {
+					expect(onNextQuestion).to.have.been.calledOnce;
+				});
+		});
+
+		it("does not show Try Again on correct, or Next Question on wrong", () => {
+			const riddle = getRiddleById("1")!;
+
+			const correctCheck = cy.stub().resolves({ correct: true });
+			cy.mount(
+				<RiddleView riddle={riddle} checkAnswer={correctCheck} />,
+			);
+			cy.get('[data-test="answer-2"]').click();
+			cy.get('[data-test="next-question-button"]').should("exist");
+			cy.get('[data-test="try-again-button"]').should("not.exist");
+		});
+	});
 });

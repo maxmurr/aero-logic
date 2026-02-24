@@ -12,10 +12,12 @@ export const RiddleView = ({
 	riddle,
 	checkAnswer,
 	onRetry,
+	onNextQuestion,
 }: {
 	riddle: Riddle;
 	checkAnswer?: CheckAnswerFn;
 	onRetry?: () => void;
+	onNextQuestion?: () => void;
 }) => {
 	const designator = `RDL-${riddle.id.padStart(3, "0")}`;
 	const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>(null);
@@ -32,6 +34,10 @@ export const RiddleView = ({
 		setSelectedAnswerId(null);
 		setResult(null);
 		onRetry?.();
+	};
+
+	const handleNextQuestion = () => {
+		onNextQuestion?.();
 	};
 
 	const getStatus = (answerId: string): string | undefined => {
@@ -123,7 +129,16 @@ export const RiddleView = ({
 									: "Your answer is wrong"}
 							</p>
 
-							{!result.correct && (
+							{result.correct ? (
+								<button
+									type="button"
+									data-test="next-question-button"
+									onClick={handleNextQuestion}
+									className="inline-flex items-center gap-2 rounded-sm border border-correct bg-panel px-5 py-2.5 font-mono text-xs tracking-[0.15em] uppercase text-correct transition-colors hover:bg-correct-bg"
+								>
+									Next Question
+								</button>
+							) : (
 								<button
 									type="button"
 									data-test="try-again-button"

@@ -44,3 +44,28 @@ export const recordAttempt = (sessionId: string, riddleId: string): void => {
 	if (!session) return;
 	session.attempts[riddleId] = (session.attempts[riddleId] ?? 0) + 1;
 };
+
+export const completeRiddle = (sessionId: string, riddleId: string): void => {
+	const session = sessions.get(sessionId);
+	if (!session) return;
+
+	session.remainingRiddleIds = session.remainingRiddleIds.filter(
+		(id) => id !== riddleId,
+	);
+	session.completedRiddleIds.push(riddleId);
+
+	if (session.remainingRiddleIds.length > 0) {
+		const randomIndex = Math.floor(
+			Math.random() * session.remainingRiddleIds.length,
+		);
+		session.currentRiddleId = session.remainingRiddleIds[randomIndex];
+	} else {
+		session.currentRiddleId = null;
+	}
+};
+
+export const isSessionComplete = (sessionId: string): boolean => {
+	const session = sessions.get(sessionId);
+	if (!session) return false;
+	return session.remainingRiddleIds.length === 0;
+};

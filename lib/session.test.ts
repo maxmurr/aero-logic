@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { createSession, getSession, recordAttempt } from "./session";
+import {
+	completeRiddle,
+	createSession,
+	getSession,
+	isSessionComplete,
+	recordAttempt,
+} from "./session";
 
 describe("createSession", () => {
 	it("returns a session with all 4 riddle IDs and empty progress", () => {
@@ -44,5 +50,54 @@ describe("recordAttempt", () => {
 
 		recordAttempt(session.id, riddleId);
 		expect(getSession(session.id)!.attempts[riddleId]).toBe(2);
+	});
+});
+
+describe("completeRiddle", () => {
+	it("moves riddle from remaining to completed and picks next", () => {
+		const session = createSession();
+		const firstRiddle = session.currentRiddleId!;
+
+		completeRiddle(session.id, firstRiddle);
+		const updated = getSession(session.id)!;
+
+		expect(updated.completedRiddleIds).toContain(firstRiddle);
+		expect(updated.remainingRiddleIds).not.toContain(firstRiddle);
+		expect(updated.remainingRiddleIds).toHaveLength(3);
+		expect(updated.currentRiddleId).not.toBe(firstRiddle);
+		expect(updated.currentRiddleId).not.toBeNull();
+		expect(updated.remainingRiddleIds).toContain(updated.currentRiddleId);
+	});
+
+	it("sets currentRiddleId to null after all riddles completed", () => {
+		const session = createSession();
+
+		for (let i = 0; i < 4; i++) {
+			const current = getSession(session.id)!.currentRiddleId!;
+			completeRiddle(session.id, current);
+		}
+
+		const final = getSession(session.id)!;
+		expect(final.currentRiddleId).toBeNull();
+		expect(final.remainingRiddleIds).toHaveLength(0);
+		expect(final.completedRiddleIds).toHaveLength(4);
+	});
+});
+
+describe("isSessionComplete", () => {
+	it("returns false for a new session", () => {
+		const session = createSession();
+		expect(isSessionComplete(session.id)).toBe(false);
+	});
+
+	it("returns true after all riddles are completed", () => {
+		const session = createSession();
+
+		for (let i = 0; i < 4; i++) {
+			const current = getSession(session.id)!.currentRiddleId!;
+			completeRiddle(session.id, current);
+		}
+
+		expect(isSessionComplete(session.id)).toBe(true);
 	});
 });
