@@ -56,6 +56,10 @@ const RIDDLES: Riddle[] = [
 	},
 ];
 
+export const getAllRiddles = (): Riddle[] => {
+	return RIDDLES;
+};
+
 export const getRiddleById = (id: string): Riddle | undefined => {
 	return RIDDLES.find((riddle) => riddle.id === id);
 };
