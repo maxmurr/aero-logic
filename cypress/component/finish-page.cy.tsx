@@ -1,4 +1,4 @@
-import { FinishView } from "../../app/finish/finish-view";
+import { FinishView } from "../../app/finish/_components/finish-view";
 
 const mockResults = [
 	{ riddleId: "1", contents: "I have wings but carry no feathers, I fly through the sky but am not a bird. I drink fuel instead of water, and my voice is a deafening roar. What am I?", attempts: 2 },

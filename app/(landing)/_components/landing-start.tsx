@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { startSession } from "./landing-actions";
+import { startSession } from "../_actions/landing-actions";
 
 export const LandingStart = () => {
 	const router = useRouter();

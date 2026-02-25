@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { getRiddleById } from "@/lib/riddles";
 import { notFound } from "next/navigation";
 import { checkAnswer, getSessionProgress } from "./actions";
-import { RiddleController } from "./riddle-controller";
-import { RiddleView } from "./riddle-view";
+import { RiddleController } from "./_components/riddle-controller";
+import { RiddleView } from "./_components/riddle-view";
 
 export const generateMetadata = async ({
 	params,

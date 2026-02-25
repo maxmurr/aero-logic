@@ -1,4 +1,4 @@
-import { RiddleView } from "../../app/riddle/[id]/riddle-view";
+import { RiddleView } from "../../app/riddle/[id]/_components/riddle-view";
 import { getRiddleById } from "../../lib/riddles";
 
 describe("Riddle Page", () => {

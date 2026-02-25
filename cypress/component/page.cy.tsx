@@ -1,5 +1,5 @@
-import { LandingView } from "../../app/landing-view";
-import { LandingClock } from "../../app/landing-clock";
+import { LandingView } from "../../app/(landing)/_components/landing-view";
+import { LandingClock } from "../../app/(landing)/_components/landing-clock";
 
 const startButton = <button type="button">Start</button>;
 

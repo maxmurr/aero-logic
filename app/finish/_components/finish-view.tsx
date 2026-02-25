@@ -1,6 +1,6 @@
 "use client";
 
-import type { RiddleResult } from "./actions";
+import type { RiddleResult } from "../actions";
 import Link from "next/link";
 
 export const FinishView = ({ results }: { results: RiddleResult[] }) => {

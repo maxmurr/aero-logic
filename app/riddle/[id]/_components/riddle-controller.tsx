@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Riddle } from "@/lib/riddles";
-import { checkAnswer, getNextRiddle } from "./actions";
+import { checkAnswer, getNextRiddle } from "../actions";
 import { RiddleView } from "./riddle-view";
 
 export const RiddleController = ({
