@@ -131,7 +131,7 @@ describe("Riddle Page", () => {
 			cy.get('[data-test="try-again-button"]')
 				.click()
 				.then(() => {
-					expect(onRetry).to.have.been.calledOnce;
+					cy.wrap(onRetry).should("have.been.calledOnce");
 				});
 		});
 	});
@@ -166,7 +166,7 @@ describe("Riddle Page", () => {
 			cy.get('[data-test="next-question-button"]')
 				.click()
 				.then(() => {
-					expect(onNextQuestion).to.have.been.calledOnce;
+					cy.wrap(onNextQuestion).should("have.been.calledOnce");
 				});
 		});
 

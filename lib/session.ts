@@ -8,6 +8,7 @@ export type Session = {
 	currentRiddleId: string | null;
 };
 
+// In-memory store — sessions are lost on server restart or across instances.
 const sessions = new Map<string, Session>();
 
 const shuffle = <T>(array: T[]): T[] => {

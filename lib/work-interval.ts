@@ -1,5 +1,5 @@
 export const getWorkInterval = (date: Date): string => {
-	const hour = date.getHours();
+	const hour = date.getUTCHours();
 
 	if (hour >= 5 && hour <= 10) return "Busy times";
 	if (hour >= 11 && hour <= 16) return "Easy jets";

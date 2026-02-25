@@ -31,9 +31,12 @@ describe("getSessionResults", () => {
 		const ids = results!.map((r) => r.riddleId);
 		expect(ids).toEqual([...ids].sort());
 
-		// Each result should have a positive attempt count
+		// Each result should have a positive attempt count and riddle contents
 		for (const result of results!) {
 			expect(result.attempts).toBeGreaterThanOrEqual(1);
+			expect(result.contents).toBeDefined();
+			expect(typeof result.contents).toBe("string");
+			expect(result.contents.length).toBeGreaterThan(0);
 		}
 	});
 

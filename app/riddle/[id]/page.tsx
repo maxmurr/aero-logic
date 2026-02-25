@@ -1,8 +1,23 @@
+import type { Metadata } from "next";
 import { getRiddleById } from "@/lib/riddles";
 import { notFound } from "next/navigation";
 import { checkAnswer, getSessionProgress } from "./actions";
 import { RiddleController } from "./riddle-controller";
 import { RiddleView } from "./riddle-view";
+
+export const generateMetadata = async ({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}): Promise<Metadata> => {
+	const { id } = await params;
+	const riddle = getRiddleById(id);
+	return {
+		title: riddle
+			? `Riddle ${id} — Aero Logic`
+			: "Riddle Not Found — Aero Logic",
+	};
+};
 
 const RiddlePage = async ({
 	params,

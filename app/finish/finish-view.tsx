@@ -1,7 +1,7 @@
 "use client";
 
-import { getRiddleById } from "@/lib/riddles";
 import type { RiddleResult } from "./actions";
+import Link from "next/link";
 
 export const FinishView = ({ results }: { results: RiddleResult[] }) => {
 	return (
@@ -22,41 +22,38 @@ export const FinishView = ({ results }: { results: RiddleResult[] }) => {
 					</p>
 
 					<ul className="space-y-3" data-test="results-list">
-						{results.map((result) => {
-							const riddle = getRiddleById(result.riddleId);
-							return (
-								<li
-									key={result.riddleId}
-									data-test={`result-${result.riddleId}`}
-									className="flex items-start gap-4 rounded-sm border border-panel-border bg-answer-bg p-4"
+						{results.map((result) => (
+							<li
+								key={result.riddleId}
+								data-test={`result-${result.riddleId}`}
+								className="flex items-start gap-4 rounded-sm border border-panel-border bg-answer-bg p-4"
+							>
+								<span className="font-mono text-xs text-amber shrink-0">
+									RDL-{result.riddleId.padStart(3, "0")}
+								</span>
+								<span className="text-sm tracking-wide flex-1">
+									{result.contents}
+								</span>
+								<span
+									data-test={`attempts-${result.riddleId}`}
+									className="font-mono text-xs text-muted shrink-0"
 								>
-									<span className="font-mono text-xs text-amber shrink-0">
-										RDL-{result.riddleId.padStart(3, "0")}
-									</span>
-									<span className="text-sm tracking-wide flex-1">
-										{riddle?.contents}
-									</span>
-									<span
-										data-test={`attempts-${result.riddleId}`}
-										className="font-mono text-xs text-muted shrink-0"
-									>
-										{result.attempts} {result.attempts === 1 ? "attempt" : "attempts"}
-									</span>
-								</li>
-							);
-						})}
+									{result.attempts} {result.attempts === 1 ? "attempt" : "attempts"}
+								</span>
+							</li>
+						))}
 					</ul>
 				</div>
 
 				{/* Back to Home */}
 				<div className="mt-10 flex justify-center">
-					<a
+					<Link
 						href="/"
 						data-test="back-to-home"
 						className="group relative inline-flex items-center gap-3 rounded-sm border border-amber bg-panel px-8 py-4 font-mono text-sm tracking-[0.15em] uppercase text-amber transition-all hover:bg-amber-glow hover:shadow-[0_0_20px_var(--amber-glow)]"
 					>
 						Back to Home
-					</a>
+					</Link>
 				</div>
 
 				{/* Bottom rule */}

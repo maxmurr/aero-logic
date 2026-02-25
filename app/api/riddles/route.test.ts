@@ -3,8 +3,7 @@ import { GET } from "./route";
 
 describe("GET /api/riddles", () => {
 	it("returns all riddles in { riddles: [...] } shape", async () => {
-		const request = new Request("http://localhost:3000/api/riddles");
-		const response = await GET(request);
+		const response = await GET();
 		const body = await response.json();
 
 		expect(response.status).toBe(200);
@@ -14,8 +13,7 @@ describe("GET /api/riddles", () => {
 	});
 
 	it("each riddle has id, contents, and answers", async () => {
-		const request = new Request("http://localhost:3000/api/riddles");
-		const response = await GET(request);
+		const response = await GET();
 		const body = await response.json();
 
 		for (const riddle of body.riddles) {

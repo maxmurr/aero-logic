@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getSessionResults } from "./actions";
 import { FinishView } from "./finish-view";
+
+export const metadata: Metadata = {
+	title: "Results — Aero Logic",
+};
 
 const FinishPage = async ({
 	searchParams,

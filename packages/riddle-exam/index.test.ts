@@ -1,18 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { getAnswerFor } from "./index";
 
 describe("getAnswerFor", () => {
-	let fetchSpy: ReturnType<typeof vi.fn>;
-
-	beforeEach(() => {
-		fetchSpy = vi.fn().mockResolvedValue(new Response(JSON.stringify({})));
-		vi.stubGlobal("fetch", fetchSpy);
-	});
-
-	afterEach(() => {
-		vi.unstubAllGlobals();
-	});
-
 	it("returns '2' for riddle 1", async () => {
 		const answerId = await getAnswerFor("1");
 		expect(answerId).toBe("2");
