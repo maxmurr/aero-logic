@@ -1,0 +1,10 @@
+{
+  "setup": ["bun install --frozen-lockfile"],
+  "checks": {
+    "test": "bunx vitest run",
+    "lint": "bun run lint",
+    "typecheck": "bunx tsc --noEmit",
+    "build": "bun run build"
+  },
+  "warmKey": ["bun.lock", "package.json"]
+}
